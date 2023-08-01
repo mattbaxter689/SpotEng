@@ -12,3 +12,11 @@ this extracts spotify data, and stores the necessary items in a postgres
 database running in a docker container. 
 
 From there I can add the necessary transformations to data that I choose to.
+
+## TODO:
+- [ ] implement a class to allow download of data from spotify
+- [ ] Add schema for postgres in docker container
+- [ ] add docker compose file and set up services
+    - add service for db
+    - add service for db eng app
+- [ ] add commands to makefile
