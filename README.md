@@ -13,6 +13,12 @@ database running in a docker container.
 
 From there I can add the necessary transformations to data that I choose to.
 
+## TO FIX
+There seems to be a weird error with spotipy in the docker container. Need to
+change this with just using the requests library instead and seeing if that
+makes it any better, since I'm getting auth errors. Will need to generate
+access token for this
+
 ## TODO:
 - [ ] implement a class to allow download of data from spotify
 - [ ] Add schema for postgres in docker container
@@ -20,3 +26,15 @@ From there I can add the necessary transformations to data that I choose to.
     - add service for db
     - add service for db eng app
 - [ ] add commands to makefile
+- [ ] add logging to application
+
+## FUTURE WORK:
+This is an iterative project that I am looking to expand upon and build more as
+time goes on. This is something that I want to put onto a resume and show that
+it is being updated when it can
+
+- [ ] build a recommendation engine with python and scikitlearn
+- [ ] create a playlist from my recommnded songs based on model
+- [ ] starting with something like pandas, look to move to dbt or the like for
+  other tools
+- [ ] look to expand the project to include other useful tools in industry

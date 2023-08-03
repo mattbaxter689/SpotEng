@@ -1,25 +1,40 @@
-import requests
-import json
-from datetime import datetime, timedelta
+import spotipy
+from spotipy.oauth2 import SpotifyOAuth
+from spotipy.client import Spotify
+from pandas import DataFrame
+import numpy as np
 
+class SpotifyConnection:
+    def __init__(self, client_id: str, client_secret: str):
+        self.client_id = client_id
+        self.client_secret = client_secret
 
-class SpotifyData:
-    def __init__(self, token: str):
-        self.token = token
+    def connect(self, scope: str) -> Spotify:
+        return spotipy.Spotify(auth_manager=SpotifyOAuth(
+            client_id=self.client_id,
+            client_secret=self.client_secret,
+            redirect_uri="http://www.google.com",
+            scope=scope
+        ))
 
-    def extract(self, days: int):
-        today = datetime.now()
-        time = today - timedelta(days=days)
-        unix_time = int(time.timestamp()) * 1000
+class SpotifyHelper:
+    def __init__(self, sp_conn):
+        self.sp_conn = sp_conn
 
-        headers = {
-                "Accept": "application/json",
-                "Content-type": "application/json",
-                "Authorization": "Bearer {token}".format(token = self.token)
-            }
+    def get_saved_id(self) -> DataFrame:
+        res = self.sp_conn.current_user_saved_tracks()
+        saved = res['items']
+        while res['next']:
+            res = self.sp_conn.next(res)
+            saved.extend(res['items'])
+        
+        saved_id = list()
+        saved_name = list()
 
-        r = requests.get("https://api.spotify.com/v1/me/player/recently-played?after={time}".format(time=unix_time),
-                headers = headers)
+        for i in range(len(saved)):
+            saved_id.append(saved[i]['track']['id'])
+            saved_name.append(saved[i]['track']['name'])
 
-        return r.json()
+        saved_id_pd = DataFrame(np.column_stack([saved_id, saved_name]), columns=["id","song_name"])
 
+        return saved_id_pd
