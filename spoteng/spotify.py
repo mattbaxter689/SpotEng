@@ -1,85 +1,39 @@
-import requests
-<<<<<<< HEAD
 from pandas import DataFrame
-import numpy as np
+from spotipy import Spotify
+from spotipy.oauth2 import SpotifyOAuth
+import spotipy
 
-# class SpotifyConnection:
-#     def __init__(self, client_id: str, client_secret: str):
-#         self.client_id = client_id
-#         self.client_secret = client_secret
-#
-#     def connect(self, scope: str) -> Spotify:
-#         return spotipy.Spotify(auth_manager=SpotifyOAuth(
-#             client_id=self.client_id,
-#             client_secret=self.client_secret,
-#             redirect_uri="http://www.google.com",
-#             scope=scope
-#         ))
+class SpotifyConnection:
+    def __init__(self, client_id: str, client_secret: str):
+        self.client_id = client_id
+        self.client_secret = client_secret
+
+    def connect(self, scope: str) -> Spotify:
+        return spotipy.Spotify(auth_manager=SpotifyOAuth(
+            client_id=self.client_id,
+            client_secret=self.client_secret,
+            redirect_uri="http://www.google.com",
+            scope=scope
+        ))
 
 class SpotifyHelper:
-    def __init__(self, client_secret: str, client_id: str):
-        self.client_secret = client_secret
-        self.client_id = client_id
-        self.access_token = self.get_token()
-
-    def authorize(self):
-        
-
-    def get_token(self):
-        response = requests.post(url='https://accounts.spotify.com/api/token',
-                                 data={ 'grant_type': 'authorization_code' },
-                                 auth=(self.client_id, self.client_secret))
-        self.spotify_token = response.json()['access_token']
+    def __init__(self, sp_conn):
+        self.sp_conn = sp_conn
 
     def get_saved_id(self) -> DataFrame:
-        songs=[]
-        headers = {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            "Authorization": "Bearer {token}".format(token = self.spotify_token)
-        }       
-        url = "https://api.spotify.com/v1/me/tracks"
-        while True:
-            response = requests.get(url=url, headers=headers)
-            results = response.json()
-            print(results)
+        results = self.sp_conn.current_user_saved_tracks()
+        saved = results['items']
 
-            for song in results["items"]:
-                songs.append({
-                    'id': song["track"]["id"],
-                    'name': song["track"]["name"]
-                })
+        while results['next']:
+            results = self.sp_conn.next(results)
+            saved.extend(results['items'])
 
-            if results["next"] is not None:
-                url = results["next"]
-            else:
-                break
+        saved_tracks = []
+        for i in range(len(saved)):
+            saved_tracks.append({
+                'id': saved_tracks[i]['track']['id'],
+                'name': saved_tracks[i]['track']['name']
+            })
 
-        songs_pd = DataFrame(songs)
+        songs_pd = DataFrame(saved_tracks)
         return songs_pd
-=======
-import json
-from datetime import datetime, timedelta
-
-
-class SpotifyData:
-    def __init__(self, token: str):
-        self.token = token
-
-    def extract(self, days: int):
-        today = datetime.now()
-        time = today - timedelta(days=days)
-        unix_time = int(time.timestamp()) * 1000
-
-        headers = {
-                "Accept": "application/json",
-                "Content-type": "application/json",
-                "Authorization": "Bearer {token}".format(token = self.token)
-            }
-
-        r = requests.get("https://api.spotify.com/v1/me/player/recently-played?after={time}".format(time=unix_time),
-                headers = headers)
-
-        return r.json()
-
->>>>>>> parent of aae0c7c (starting docker containers, adding spotify data)
