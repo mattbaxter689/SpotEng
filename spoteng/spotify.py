@@ -13,7 +13,8 @@ class SpotifyConnection:
             client_id=self.client_id,
             client_secret=self.client_secret,
             redirect_uri="http://www.google.com",
-            scope = scope
+            scope = scope,
+            open_browser=False
         ))
 
 
