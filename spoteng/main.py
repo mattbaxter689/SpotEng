@@ -1,7 +1,7 @@
 from utils.config import get_warehouse_creds
 from utils.db import WarehouseConnection
 from dotenv import load_dotenv
-from spotify import SpotifyHelper, SpotifyConnection
+from spotify import SpotifyHelper, SpotifyConnection, SpotifySongModel
 import os
 
 load_dotenv()
@@ -16,10 +16,15 @@ def run():
     songs = help.get_saved_id()
 
     with WarehouseConnection(get_warehouse_creds()).managed_cursor() as curr:
+        #might replace this list here to just loop through records in songs
+        #and write to database. Not efficient but itll work hopefully
         songs_list = list(songs)
         curr.execute("""
                      INSERT INTO songs.names (
-                            VALUES(%s, %s)
+                            VALUES(
+                                %(id)s, 
+                                %(name)s
+                            )
                         )
                      """, songs_list)
     

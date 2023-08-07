@@ -14,9 +14,16 @@ database running in a docker container.
 From there I can add the necessary transformations to data that I choose to.
 
 ## TODO:
-- [ ] implement a class to allow download of data from spotify
-- [ ] Add schema for postgres in docker container
-- [ ] add docker compose file and set up services
+- [ ] Make sure data is uploading properly to postgres
+- [ ] look into possibly saving data initially to csv in S3 bucket? Then
+  pulling, transforming and loading to postgres (this would be my data lake)
+- [ ] Look to incorporate maybe the recently played tracks
+    - can extend this further by streaming with kafka?
+
+## COMPLETED:
+- [x] implement a class to allow download of data from spotify
+- [x] Add schema for postgres in docker container
+- [x] add docker compose file and set up services
     - add service for db
     - add service for db eng app
-- [ ] add commands to makefile
+- [x] add commands to makefile
