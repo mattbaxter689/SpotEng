@@ -3,6 +3,7 @@ from dataclasses import dataclass
 
 import psycopg2
 
+
 @dataclass
 class DBConnection:
     db: str
@@ -11,12 +12,13 @@ class DBConnection:
     host: str
     port: int
 
+
 class WarehouseConnection:
     def __init__(self, db_conn: DBConnection):
         self.conn_url = (
-                f"postgresql://{db_conn.user}:{db_conn.password}@"
-                f"{db_conn.host}:{db_conn.port}/{db_conn.db}"
-            ) 
+            f"postgresql://{db_conn.user}:{db_conn.password}@"
+            f"{db_conn.host}:{db_conn.port}/{db_conn.db}"
+        )
 
     @contextmanager
     def managed_cursor(self):
