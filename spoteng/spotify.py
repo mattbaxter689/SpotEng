@@ -1,14 +1,7 @@
-from pandas import DataFrame
+# from pandas import DataFrame
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 from spotipy import Spotify
-from dataclasses import dataclass
-
-# I dont know if this is needed here honestly. Unless i append model to list
-@dataclass
-class SpotifySongModel:
-    id: str
-    name: str
 
 class SpotifyConnection:
     def __init__(self, client_id: str, client_secret: str):
@@ -29,7 +22,7 @@ class SpotifyHelper:
     def __init__(self, sp_conn):
         self.sp_conn = sp_conn
 
-    def get_saved_id(self) -> DataFrame:
+    def get_saved_id(self) -> list[dict]:
         results = self.sp_conn.current_user_saved_tracks()
         saved = results['items']
 
@@ -46,5 +39,5 @@ class SpotifyHelper:
 
         #I dont think i need to return a dataframe here. I think instead
         #I can just return a list of SpotifySongModel or dictionary instead
-        songs_pd = DataFrame(saved_tracks)
-        return songs_pd
+        # songs_pd = DataFrame(saved_tracks)
+        return saved_tracks
