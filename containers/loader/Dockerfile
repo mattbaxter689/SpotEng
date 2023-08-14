@@ -12,4 +12,4 @@ FROM python:3.11-slim
  RUN pip3 install -r requirements.txt
 
  COPY ../.. /opt/sde/spoteng/
- CMD ["python3", "main.py"]
+ CMD ["tail", "-f", "/dev/null"]

@@ -1,11 +1,13 @@
 import os
 
+import psycopg2.extras as p
 from dotenv import load_dotenv
 from spotify import SpotifyConnection, SpotifyHelper
 from utils.config import get_warehouse_creds
 from utils.db import WarehouseConnection
 
 load_dotenv()
+
 
 def run():
     spot = SpotifyConnection(
@@ -17,21 +19,20 @@ def run():
     sp_conn = spot.connect(scope=scope)
     help = SpotifyHelper(sp_conn=sp_conn)
     songs = help.get_saved_id()
-    for song in songs:
-        with WarehouseConnection(get_warehouse_creds()).managed_cursor() as curr:
-            # might replace this list here to just loop through records in songs
-            # and write to database. Not efficient but itll work hopefully
-            curr.execute(
-                """
-                         INSERT INTO songs.names (
-                                VALUES(
-                                    %(id)s, 
-                                    %(name)s
-                                )
-                            )
-                         """,
-                song,
-            )
+
+    with WarehouseConnection(get_warehouse_creds()).managed_cursor() as curr:
+        p.execute_batch(
+            curr,
+            """
+             INSERT INTO songs.names (
+                    VALUES(
+                        %(id)s, 
+                        %(name)s
+                    )
+                )
+            """,
+            songs,
+        )
 
 
 if __name__ == "__main__":

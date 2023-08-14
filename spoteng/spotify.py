@@ -3,12 +3,13 @@ import spotipy
 from spotipy import Spotify
 from spotipy.oauth2 import SpotifyOAuth
 
+
 class SpotifyConnection:
     def __init__(self, client_id: str, client_secret: str):
         self.client_id = client_id
         self.client_secret = client_secret
 
-    def connect(self, scope) -> Spotify:
+    def connect(self, scope: str) -> Spotify:
         return spotipy.Spotify(
             auth_manager=SpotifyOAuth(
                 client_id=self.client_id,
@@ -42,3 +43,5 @@ class SpotifyHelper:
         # I can just return a list of SpotifySongModel or dictionary instead
         # songs_pd = DataFrame(saved_tracks)
         return saved_tracks
+
+
