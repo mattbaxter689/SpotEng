@@ -25,23 +25,23 @@ class SpotifyHelper:
     def __init__(self, sp_conn):
         self.sp_conn = sp_conn
 
-    def get_saved_id(self) -> list[dict]:
-        results = self.sp_conn.current_user_saved_tracks()
+    def extend_result(self, results):
         saved = results["items"]
-
         while results["next"]:
             results = self.sp_conn.next(results)
             saved.extend(results["items"])
 
-        saved_tracks = list()
-        for i in range(len(saved)):
-            saved_tracks.append(
-                {"id": saved[i]["track"]["id"], "name": saved[i]["track"]["name"]}
-            )
+        return saved
 
-        # I dont think i need to return a dataframe here. I think instead
-        # I can just return a list of SpotifySongModel or dictionary instead
-        # songs_pd = DataFrame(saved_tracks)
+    def get_saved_id(self) -> list[dict]:
+        results = self.sp_conn.current_user_saved_tracks()
+        saved = self.extend_result(results)
+
+        saved_tracks = [{"id": song["track"]["id"]} for song in saved]
         return saved_tracks
 
+    def get_top_track_id(self) -> None:
+        pass
 
+    def get_track_features(self) -> None:
+        pass

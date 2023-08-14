@@ -34,6 +34,5 @@ def run():
             songs,
         )
 
-
 if __name__ == "__main__":
     run()
