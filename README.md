@@ -14,6 +14,11 @@ database running in a docker container.
 From there I can add the necessary transformations to data that I choose to.
 
 ## TODO:
+- [ ] add func to artist class to get artist genres
+- [ ] change sql migration for new table with track features
+- [ ] add new structure for kmeans algorithm. Will involve data prep
+
+## FUTURE IMPLEMENTATION IDEAS:
 - [ ] look into possibly saving data initially to csv in S3 bucket? Then
   pulling, transforming and loading to postgres (S3 would be my data lake)
     - make sure that the data has other variables associated (Acousticness etc)
@@ -22,13 +27,3 @@ From there I can add the necessary transformations to data that I choose to.
 - [ ] look to possibly incorporate streaming with kafka. Ie: take data from S3
   data lake as csv or parquet, and stream each row or rows to a consumer that
   saves to postgres
-
-## COMPLETED:
-- [x] implement a class to allow download of data from spotify
-- [x] Add schema for postgres in docker container
-- [x] add docker compose file and set up services
-    - add service for db
-    - add service for db eng app
-- [x] add commands to makefile
-- [x] Make sure data is uploading properly to postgres
-
