@@ -18,21 +18,25 @@ def run():
     scope = "user-library-read user-follow-read user-top-read playlist-read-private"
     sp_conn = spot.connect(scope=scope)
     help = SpotifyHelper(sp_conn=sp_conn)
-    songs = help.get_saved_id()
+    saved_songs = help.get_saved_id()
+    top_songs = help.get_top_track_id()
+    songs = saved_songs + top_songs
+    help.get_track_features(songs)
+    
 
-    with WarehouseConnection(get_warehouse_creds()).managed_cursor() as curr:
-        p.execute_batch(
-            curr,
-            """
-             INSERT INTO songs.names (
-                    VALUES(
-                        %(id)s, 
-                        %(name)s
-                    )
-                )
-            """,
-            songs,
-        )
+    # with WarehouseConnection(get_warehouse_creds()).managed_cursor() as curr:
+    #     p.execute_batch(
+    #         curr,
+    #         """
+    #          INSERT INTO songs.names (
+    #                 VALUES(
+    #                     %(id)s, 
+    #                     %(name)s
+    #                 )
+    #             )
+    #         """,
+    #         songs,
+    #     )
 
 if __name__ == "__main__":
     run()
