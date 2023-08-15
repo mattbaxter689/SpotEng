@@ -22,7 +22,6 @@ def run():
     top_songs = help.get_top_track_id()
     songs = saved_songs + top_songs
     help.get_track_features(songs)
-    
 
     # with WarehouseConnection(get_warehouse_creds()).managed_cursor() as curr:
     #     p.execute_batch(
@@ -30,13 +29,14 @@ def run():
     #         """
     #          INSERT INTO songs.names (
     #                 VALUES(
-    #                     %(id)s, 
+    #                     %(id)s,
     #                     %(name)s
     #                 )
     #             )
     #         """,
     #         songs,
     #     )
+
 
 if __name__ == "__main__":
     run()
