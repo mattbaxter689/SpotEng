@@ -2,7 +2,7 @@ import os
 
 import psycopg2.extras as p
 from dotenv import load_dotenv
-from spotify import SpotifyConnection, SpotifyHelper
+from spotify.spotify import SpotifyConnection, SpotifyFeatures
 from utils.config import get_warehouse_creds
 from utils.db import WarehouseConnection
 
@@ -17,7 +17,7 @@ def run():
 
     scope = "user-library-read user-follow-read user-top-read playlist-read-private"
     sp_conn = spot.connect(scope=scope)
-    help = SpotifyHelper(sp_conn=sp_conn)
+    help = SpotifyFeatures(sp_conn=sp_conn)
     saved_songs = help.get_saved_id()
     top_songs = help.get_top_track_id()
     songs = saved_songs + top_songs

@@ -6,7 +6,7 @@ from spotipy.oauth2 import SpotifyOAuth
 
 
 class SpotifyConnection:
-    def __init__(self, client_id: str, client_secret: str):
+    def __init__(self, client_id: str, client_secret: str) -> None:
         self.client_id = client_id
         self.client_secret = client_secret
 
@@ -22,8 +22,8 @@ class SpotifyConnection:
         )
 
 
-class SpotifyHelper:
-    def __init__(self, sp_conn):
+class SpotifyFeatures:
+    def __init__(self, sp_conn) -> None:
         self.sp_conn = sp_conn
 
     def extend_result(self, results):
