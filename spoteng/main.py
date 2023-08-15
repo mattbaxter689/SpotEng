@@ -17,9 +17,9 @@ def run():
 
     scope = "user-library-read user-follow-read user-top-read playlist-read-private"
     sp_conn = spot.connect(scope=scope)
-    help = SpotifyFeatures(sp_conn=sp_conn)
-    saved_songs = help.get_saved_id()
-    top_songs = help.get_top_track_id()
+    feat = SpotifyFeatures(sp_conn=sp_conn)
+    saved_songs = feat.get_saved_id()
+    top_songs = feat.get_top_track_id()
     songs = saved_songs + top_songs
     help.get_track_features(songs)
 
